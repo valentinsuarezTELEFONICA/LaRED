@@ -1,0 +1,138 @@
+LA RED DE TELEFÓNICA EN CIFRAS  ·  dashboard local + editor
+===========================================================
+
+1) INSTALAR
+   - Descomprime el ZIP en una carpeta (por ejemplo, en el Escritorio).
+     Debe quedar una carpeta "dashboard-telefonica" con todo dentro.
+   - No muevas archivos sueltos: index.html y editor.html necesitan las
+     carpetas css, js, data e img que tienen al lado.
+   - Funciona sin internet y sin servidor. Usa Chrome o Edge.
+
+2) VER EL DASHBOARD
+   - Doble clic en  index.html
+   - Atajos:  L = cambiar ES/EN   R = repetir animación   F = pantalla completa
+   - Se puede abrir directamente en inglés con:  index.html?lang=en
+   - El dashboard está pensado para una pantalla 4K (3840 x 2160 px) y se
+     ancla en la esquina superior izquierda (0,0), sin centrar. Si lo abres
+     en un monitor normal, se ve escalado y con margen a la derecha/abajo;
+     eso es normal.
+
+3) CAMBIAR LOS DATOS (para quien no sabe de informática)
+   - Doble clic en  editor.html
+   - Los NÚMEROS se escriben una sola vez y valen para los dos idiomas.
+     Los TEXTOS tienen dos casillas: ES y EN.
+   - Haz clic en una caja de la vista previa (o en su nombre a la izquierda).
+   - Para MOVER una caja: arrástrala. Para cambiar su TAMAÑO: usa los
+     cuadraditos del borde. También se puede escribir X, Y, Ancho y Alto.
+     "Orden" = cuándo aparece en la animación (las que tienen el mismo número
+     aparecen a la vez). Estas coordenadas se escriben en un lienzo de
+     1920 x 1080 px, que es exactamente la mitad de la pantalla real 4K.
+   - Series de números (gráficos): separa con espacios o saltos de línea.
+     Se puede pegar una columna de Excel.
+   - Para cambiar una IMAGEN: "Elegir imagen…". Se copia sola a la carpeta img
+     al guardar.
+   - PAÍSES Y BANDERAS: donde antes había un código de texto (ES, DE...)
+     ahora hay un desplegable con el nombre del país y su bandera en miniatura.
+     En el bloque de "Consumo energético" (varios países a la vez) hay chips
+     con su bandera y una "✕" para quitarlos, y un desplegable con botón
+     "+ Añadir" para poner otro. Las banderas salen de la carpeta img/flags,
+     con la lista de países de data/flags.js. Si algún país no tuviera imagen
+     de bandera, el dashboard muestra su código en una cajita de texto en su
+     lugar, en vez de romperse.
+   - Pulsa "Guardar cambios". Cada vez que abras el editor, te pedirá elegir
+     la carpeta "dashboard-telefonica" y permitir los cambios (esto se repite
+     en cada sesión a propósito, para no arriesgarse a guardar por error en
+     una carpeta antigua de otra versión); mientras tengas la pestaña abierta,
+     no te lo vuelve a pedir. Después abre index.html. El aviso verde de
+     abajo dice el nombre de la carpeta donde ha guardado: comprueba que es
+     la correcta. (Si tu navegador no lo permite, se descarga datos.js:
+     cópialo en la carpeta data reemplazando el anterior.)
+   - Si cierras sin guardar, el editor ofrece recuperar el borrador.
+
+4) IMÁGENES PROPIAS EN LOS ICONOS
+   En "Consumo medio de tráfico por usuario" y en "Red móvil" (dentro de
+   "Red de Telefónica en cifras"), cada dato tiene un icono por defecto, pero
+   puedes subir tu propia imagen en el campo "Imagen propia (opcional)" — se
+   mostrará redonda en vez del icono. Igual que las imágenes de los 4 paneles
+   superiores, se copia a la carpeta img al pulsar "Guardar cambios", así que
+   no se pierde.
+   Las banderas de los países (fibra, 5G, consumo energético) también se
+   muestran ahora redondas.
+
+5) APARIENCIA (título, fondo y tamaños de letra)
+   En "Ajustes generales" del editor:
+   - Posición y tamaño del título: tres casillas (X, Y, tamaño de letra) para
+     mover el título "LA RED DE TELEFÓNICA EN CIFRAS" y cambiar su tamaño.
+   - Color de fondo: 5 selectores de color forman el degradado de arriba a
+     abajo de toda la pantalla. Cambia cualquiera de ellos y se actualiza al
+     momento en la vista previa.
+   - Tamaño de letra de los títulos de las 4 cajas superiores y de los
+     títulos de las tarjetas de datos: dos campos numéricos, cada uno afecta
+     a todos los títulos de su grupo a la vez (no caja por caja).
+
+   La tarjeta "La red de Telefónica en cifras" ahora se organiza en 2
+   columnas. Cada bloque de esa tarjeta (medidores, iconos, banderas, nota,
+   gráfico) tiene un selector "Columna" para decidir si va a la izquierda o
+   a la derecha. Hay dos tipos de bloque nuevos:
+   - "Iconos": datos con un icono, un valor y una etiqueta corta (se usa en
+     la Red móvil).
+   - "Banderas": países con un valor o porcentaje debajo de la bandera, sin
+     repetir la etiqueta en cada fila. Puede llevar varios "grupos" con su
+     propia etiqueta (como "Cobertura 5G" y "Ciudades y pueblos con 5G").
+
+6) ZONA VISIBLE EN LA PANTALLA REAL
+   Si tu pantalla real solo muestra una parte de los 3840 x 2160 px (por el
+   marco, el bisel o la propia instalación), en el editor tienes, en
+   "Ajustes generales" (arriba del todo), dos campos: "Ancho visible" y
+   "Alto visible", en píxeles de la pantalla real, anclados siempre en la
+   esquina superior izquierda (0,0). Ahora mismo están en 3784 x 1290 px,
+   los valores que diste. En la vista previa aparece un rectángulo rayado en
+   rojo que marca lo que NO se ve, y cada caja que quede fuera (total o
+   parcialmente) se avisa con "⚠ fuera de la zona visible" en el panel
+   izquierdo. Esta guía no recorta nada por sí sola: si una caja queda fuera,
+   muévela o achícala tú mismo arrastrando, con los tiradores o escribiendo
+   las coordenadas.
+
+   IMPORTANTE: con 3784 x 1290 px visibles, la franja visible de alto
+   equivale a 645 px del lienzo de 1080 (1290 ÷ 2). Las 4 imágenes de arriba
+   caben, pero la fila de abajo (las 6 tarjetas de datos) empieza en el
+   diseño original en y=440 y termina en y=1040 — se sale bastante de esos
+   645 px. Tal como está ahora, la mayor parte de esa fila de abajo quedaría
+   fuera de lo que se ve en tu pantalla real. Antes de proyectarlo de verdad,
+   entra en el editor, mira el rectángulo rojo y reorganiza (o reduce) esas
+   6 tarjetas para que quepan dentro de la zona visible; o dime y te preparo
+   yo una disposición ajustada a esos 3784 x 1290 px.
+
+7) DÓNDE ESTÁ CADA COSA
+   index.html            El dashboard (lo que se proyecta)
+   editor.html            El editor de datos y de posiciones
+   data/datos.js          Todos los datos y posiciones (el JSON, dentro de una línea de JavaScript)
+   data/dashboard.json    Copia del mismo JSON (para importarlo/exportarlo)
+   data/flags.js          Catálogo de países y sus banderas (nombre, ISO, archivo de imagen)
+   img/                   Imágenes de los 4 paneles superiores (panel1.png … panel4.png)
+   img/flags/              Las 48 banderas
+   css/ y js/              Diseño y motor (no hace falta tocarlos)
+
+   Consejo: haz una copia de data/datos.js antes de cambios grandes.
+
+8) NOTAS TÉCNICAS
+   - El diseño se edita siempre en un lienzo de 1920 x 1080 px; index.html lo
+     escala x2 y lo ancla en (0,0) para la pantalla real de 3840 x 2160 px
+     (configurable en data.meta.canvas, dentro de datos.js).
+   - Los datos van en datos.js y no en un .json suelto porque el navegador
+     bloquea leer archivos JSON desde un HTML abierto en local.
+   - Los valores de ejemplo (excepto países/banderas) son de PRUEBA.
+
+9) SI LA PANTALLA SALE EN BLANCO
+   index.html y editor.html no deberían quedarse nunca en blanco: si algo
+   falla, aparece un mensaje en rojo con el error exacto y en qué archivo ha
+   ocurrido (se captura tanto al abrir la página como al cambiar de idioma,
+   repetir la animación o guardar). Si lo ves, haz una captura y pásamela:
+   con el texto exacto del error lo arreglo directamente. Antes de nada,
+   comprueba también que has descomprimido el ZIP entero en una carpeta
+   nueva (no solo editor.html o index.html sueltos) y que la carpeta
+   mantiene junto a ellos css, js, data e img.
+   En el editor, el propio mensaje de abajo del todo ("Listo. Haz clic...")
+   lleva entre corchetes un diagnóstico técnico (tamaño de la vista previa,
+   escala, y si css/dashboard.css se ha cargado) que puede ayudar a detectar
+   estos problemas de un vistazo.

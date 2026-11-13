@@ -1,0 +1,138 @@
+/* Estilos del dashboard. Compartido por index.html y editor.html */
+:root{
+  --mut:#b9c3dc; --accent:#5bc5f2;
+  --font:"Telefonica Sans","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --tt-size:13.5px;      /* tamaño de los títulos de las 4 cajas superiores, configurable desde el CMS */
+  --card-title-size:13px; /* tamaño de los títulos de las tarjetas de datos, configurable desde el CMS */
+}
+.stage,.stage *{box-sizing:border-box}
+.stage{
+  position:relative;width:1920px;height:1080px;overflow:hidden;flex:none;
+  font-family:var(--font);color:#fff;
+  /* el degradado real se aplica inline desde JS a partir de meta.bg (editable en el CMS); esto es solo el valor por defecto */
+  background:linear-gradient(180deg,#67769b 0,#7b88a8 100px,#56648b 320px,#2c3653 600px,#232c46 100%);
+}
+.stage svg{display:block;overflow:visible}
+.stage svg text{fill:#c6cfe4;font-size:10px;font-family:var(--font)}
+
+/* ---------- cabecera ---------- */
+.stage header{position:absolute;left:48px;right:48px;top:0;height:100px;display:flex;align-items:center;justify-content:flex-end}
+.stage h1.dash-title{position:absolute;margin:0;font-weight:700;letter-spacing:.01em;white-space:nowrap;left:48px;top:36px;font-size:34px}
+.ctl{display:flex;gap:4px;background:#fff;border-radius:6px;padding:6px;transition:opacity .5s}
+body.idle .ctl{opacity:0}
+.ctl button{font:600 15px var(--font);border:0;background:transparent;color:#3a4566;padding:8px 14px;border-radius:4px;cursor:pointer}
+.ctl button:hover{background:#eef1f8}
+.ctl button.on{background:#0a5cff;color:#fff}
+.ctl button:focus-visible{outline:2px solid #0a5cff;outline-offset:1px}
+
+/* ---------- cajas (posición absoluta, editable desde el CMS) ---------- */
+.box{position:absolute}
+.seq{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.seq.on{opacity:1;transform:none}
+
+/* imagen fija en marco */
+.tp{height:100%;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,.28);display:flex;flex-direction:column;min-height:0}
+.tt{color:#1f2a44;font-size:var(--tt-size);font-weight:700;text-transform:uppercase;padding:8px 12px;min-height:48px;display:flex;align-items:center;line-height:1.2;flex:none}
+.frame{position:relative;flex:1;min-height:0;background:#dfe4ef;overflow:hidden}
+.frame img{width:100%;height:100%;object-fit:cover;display:block}
+.frame .ph{display:none;position:absolute;inset:0;align-items:center;justify-content:center;text-align:center;padding:16px;
+  color:#5a668a;font-size:13px;background:repeating-linear-gradient(135deg,#e6eaf3 0 14px,#dde2ee 14px 28px)}
+.frame.missing img{display:none}
+.frame.missing .ph{display:flex}
+
+/* tarjetas de datos */
+.card{height:100%;background:linear-gradient(180deg,#3e4a68,#343f5b);border-radius:3px;padding:16px 18px;display:flex;flex-direction:column;min-height:0;overflow:hidden;
+  box-shadow:0 8px 24px rgba(0,0,0,.28)}
+.card h3{margin:0 0 10px;font-size:var(--card-title-size);letter-spacing:.02em;text-transform:uppercase;line-height:1.25;font-weight:700;flex:none}
+.card .body{flex:1;min-height:0;display:flex;flex-direction:column}
+.host{position:relative;flex:1 1 0;min-height:0}
+.stage .host>svg{position:absolute;left:0;top:0;width:100%;height:100%}
+
+/* animaciones de gráficos (se activan con .on en la caja) */
+.rv{width:0;transition:width 1.8s cubic-bezier(.4,0,.2,1) .3s}
+.on .rv{width:var(--w)}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1) var(--d,.3s)}
+.on .draw{stroke-dashoffset:0}
+.fadein{opacity:0;transition:opacity .6s ease 1.7s}
+.on .fadein{opacity:1}
+.arc{stroke-dasharray:0 100;transition:stroke-dasharray 1.6s cubic-bezier(.4,0,.2,1) .4s}
+.on .arc{stroke-dasharray:var(--a) var(--b)}
+.bar{height:6px;background:rgba(255,255,255,.16);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:3px;transition:width 1.6s cubic-bezier(.4,0,.2,1) .4s}
+.on .bar i{width:var(--w)}
+
+/* vista estática (editor): sin animaciones */
+.static *,.static{transition:none !important}
+
+/* red en cifras: 2 columnas (izquierda: banda ancha/móvil/5G — derecha: fibra/energía/evolución) */
+.blocks2{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;flex:1;min-height:0}
+.bcol{display:flex;flex-direction:column;gap:8px;min-height:0}
+.blk{border:1px solid rgba(255,255,255,.2);border-radius:3px;padding:7px 10px}
+.blk.grow{flex:1 1 0;min-height:60px;display:flex;flex-direction:column}
+.blk h4{margin:0 0 5px;font-size:9.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--mut);font-weight:700}
+
+/* medidores (banda ultra ancha) */
+.gauges{display:flex;justify-content:space-around}
+.g{width:47%;text-align:center;position:relative}
+.g svg{width:74px;height:auto;margin:0 auto}
+.g .gv{position:absolute;left:0;right:0;top:19px;font-size:15px;font-weight:700;line-height:1}
+.g .gv small{font-size:9.5px;font-weight:600;margin-left:1px}
+.g p{margin:2px 0 0;font-size:8.5px;color:var(--mut);line-height:1.2}
+
+/* red móvil: iconos con valor y etiqueta corta */
+.icons{display:flex;justify-content:space-between;gap:4px}
+.ic1{text-align:center;flex:1;min-width:0}
+.ic1 svg{width:26px;height:26px;stroke:#bcd0ff;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;margin:0 auto 3px}
+.ic1 .ic-img{width:26px;height:26px;margin:0 auto 3px}
+.ic1 b{display:block;font-size:13px;font-weight:700;line-height:1.1}
+.ic1 span{display:block;font-size:8px;color:var(--mut);line-height:1.2;margin-top:1px}
+
+/* banderas con valor/porcentaje debajo: usado en cobertura 5G y fibra por país */
+.chips{display:flex;justify-content:space-between;gap:6px}
+.chip{text-align:center;flex:1;min-width:0}
+.chip .flag{width:26px;height:26px;margin:0 auto}
+.chip b{display:block;font-size:11px;font-weight:700;margin-top:3px;white-space:nowrap}
+
+.code{background:rgba(255,255,255,.16);border-radius:3px;text-align:center;font-size:10px;font-weight:700;padding:2px 0}
+.flag{position:relative;display:inline-flex;width:28px;height:28px;border-radius:50%;overflow:hidden;flex:none;box-shadow:0 0 0 1px rgba(255,255,255,.3);align-items:center;justify-content:center;background:rgba(255,255,255,.16)}
+.flag img{width:100%;height:100%;object-fit:cover;display:block}
+.flag b{display:none;font-size:10px;font-weight:700}
+.flag.noimg{box-shadow:none}
+.flag.noimg img{display:none}
+.flag.noimg b{display:block}
+.note{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:10.5px;line-height:1.3}
+.codes{display:flex;gap:4px;flex:none}
+.codes .flag{width:20px;height:20px}
+.codes .flag b{font-size:8px}
+
+/* consumo medio */
+.card .body.center{justify-content:space-around}
+.srow{display:grid;grid-template-columns:46px 1fr;gap:12px;align-items:start}
+.srow .ic svg{width:46px;height:46px;stroke:#fff;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.srow .ic .ic-img{width:46px;height:46px}
+.ic-img{position:relative;display:inline-block;border-radius:50%;overflow:hidden;background:rgba(255,255,255,.16);box-shadow:0 0 0 1px rgba(255,255,255,.25)}
+.ic-img img{width:100%;height:100%;object-fit:cover;display:block}
+.ic-img.noimg img{display:none}
+.ic-img.noimg::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(255,255,255,.14) 0 6px,rgba(255,255,255,.06) 6px 12px)}
+.srow h5{margin:0;font-size:10.5px;letter-spacing:.03em;text-transform:uppercase}
+.srow p{margin:3px 0 7px;font-size:10.5px;color:var(--mut);line-height:1.35}
+.sv{display:flex;align-items:baseline;gap:6px;margin-bottom:5px}
+.sv b{font-size:28px;line-height:1}
+.sv small{font-size:12px;color:var(--mut)}
+
+/* categorías y semanales */
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:10.5px;color:#e6ebf7}
+.legend div{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.legend i{width:9px;height:9px;border-radius:2px;flex:none}
+.legend em{font-style:normal;color:var(--mut);margin-left:auto}
+.dl{display:flex;align-items:center;gap:14px;margin-top:10px;flex:none}
+.dl svg{width:150px;height:150px;flex:none}
+.dl .legend{flex:1}
+.multi-legend{margin-top:8px;flex:none}
+
+/* mensaje de error */
+.fatal{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:28px;padding:80px;line-height:1.5}
+
+@media (prefers-reduced-motion:reduce){
+  .seq,.rv,.draw,.fadein,.arc,.bar i{transition-duration:.01s !important;transition-delay:0s !important}
+}

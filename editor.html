@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Editor del dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/editor.css">
+</head>
+<body>
+<div id="e-app">
+
+  <aside id="e-side">
+    <div class="e-brand"><b>Editor del dashboard</b><span>La red de Telefónica en cifras</span></div>
+    <p class="e-intro">
+      <b>Los números se escriben una sola vez</b> y valen para los dos idiomas.
+      Los textos tienen dos casillas: <span class="e-tag">ES</span> y <span class="e-tag">EN</span>.<br>
+      Haz clic en una caja de la vista previa (o en su nombre aquí) para editarla. Para acabar, pulsa <b>Guardar cambios</b>.
+    </p>
+    <div id="e-form"></div>
+  </aside>
+
+  <main id="e-main">
+    <div class="e-tools">
+      <div class="e-seg" role="group" aria-label="Idioma de la vista previa">
+        <button data-l="es" class="on">Español</button><button data-l="en">English</button>
+      </div>
+      <button class="e-btn" id="e-play">▶ Ver animación</button>
+      <label class="e-lock"><input type="checkbox" id="e-lock"> Bloquear cajas</label>
+      <span class="e-grow"></span>
+      <button class="e-btn ghost" id="e-import">Importar JSON</button>
+      <button class="e-btn ghost" id="e-export">Exportar JSON</button>
+      <button class="e-btn primary" id="e-save">Guardar cambios</button>
+    </div>
+    <div id="e-pv"><div id="e-pvwrap"><div id="stage" class="stage"></div></div></div>
+    <div id="e-status" role="status"></div>
+  </main>
+</div>
+
+<dialog id="e-dlg">
+  <h3>Guardar en la carpeta del dashboard</h3>
+  <p>Se abrirá una ventana para que elijas la carpeta <b>dashboard-telefonica</b> (la que contiene <i>editor.html</i> e <i>index.html</i>).</p>
+  <p>Selecciónala y pulsa <b>Seleccionar carpeta</b>; luego confirma con <b>Permitir cambios</b>. Se recordará mientras tengas esta pestaña abierta; si cierras y vuelves a abrir el editor, te la volverá a pedir (así nunca se guarda por error en una carpeta antigua).</p>
+  <div class="e-dlg-btns"><button class="e-btn ghost" id="e-dlg-cancel">Cancelar</button><button class="e-btn primary" id="e-dlg-ok">Elegir carpeta</button></div>
+</dialog>
+
+<input type="file" id="e-file-json" accept=".json,.js" hidden>
+<input type="file" id="e-file-img" accept="image/*" hidden>
+
+<script src="data/flags.js"></script>
+<script src="data/datos.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/editor.js"></script>
+</body>
+</html>

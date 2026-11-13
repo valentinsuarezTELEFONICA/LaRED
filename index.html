@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>La red de Telefónica en cifras</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="css/dashboard.css">
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;background:#000}
+  body.idle{cursor:none}
+  #stage{position:absolute;left:0;top:0;transform-origin:0 0}
+</style>
+</head>
+<body>
+<div id="stage" class="stage"></div>
+<script src="data/flags.js"></script>
+<script src="data/datos.js"></script>
+<script src="js/dashboard.js"></script>
+<script>
+try {
+  Dashboard.start(document.getElementById('stage'));
+} catch (err) {
+  console.error(err);
+  document.body.insertAdjacentHTML('beforeend',
+    '<div style="position:fixed;inset:0;background:#1b1b1b;color:#ff8a80;font:13px/1.5 monospace;' +
+    'padding:24px;overflow:auto;z-index:999999;white-space:pre-wrap">ERROR AL CARGAR EL DASHBOARD (index.html):\n\n' +
+    String((err && err.stack) || err).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])) + '</div>');
+}
+</script>
+</body>
+</html>

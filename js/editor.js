@@ -10,6 +10,7 @@
   const DRAFT_KEY = 'dashboard-editor-borrador-v1';
   const CANVAS = { w: 3840, h: 2160 };   // pantalla real (4K); el diseño se edita siempre en 1920×1080 (la mitad exacta)
   const DESIGN_SCALE = 1920 / CANVAS.w;  // = 0.5
+  const PX = CANVAS.w / 1920;            // = 2 → píxeles reales por unidad de diseño. Los campos X/Y/Ancho/Alto se escriben en píxeles REALES (4K) y se guardan en unidades de diseño.
 
   if (!window.DASHBOARD_DATA) {
     document.body.innerHTML = '<p style="padding:40px;font:16px sans-serif">No se encuentra <b>data/datos.js</b>. Comprueba que has descomprimido toda la carpeta del ZIP y que abres <b>editor.html</b> desde dentro de ella.</p>';
@@ -29,11 +30,11 @@
      visible, puede que esta disposición ya no encaje del todo: ajústala a mano o pulsa este botón
      de nuevo tras corregir la zona visible. */
   const DEFAULT_LAYOUT = {
-    'img-trafico-movil': [48, 86, 429, 160, 0], 'img-telxius': [513, 86, 429, 160, 0],
-    'img-red-internacional': [978, 86, 429, 160, 0], 'img-red-ip': [1443, 86, 429, 160, 0],
-    'red-en-cifras': [48, 256, 429, 389, 1], 'trafico-total': [513, 256, 429, 190, 2],
-    'consumo-medio': [513, 456, 429, 189, 2], 'trafico-categorias': [978, 256, 429, 389, 3],
-    'semanal-fibra': [1443, 256, 429, 190, 4], 'semanal-cobre': [1443, 456, 429, 189, 4]
+    'img-trafico-movil': [50, 86, 419, 252, 0], 'img-telxius': [508, 86, 419, 252, 0],
+    'img-red-internacional': [966, 86, 419, 252, 0], 'img-red-ip': [1417, 86, 419, 252, 0],
+    'red-en-cifras': [50, 379, 419, 236, 1], 'trafico-total': [508, 379, 419, 110, 2],
+    'consumo-medio': [508, 507, 419, 108, 2], 'trafico-categorias': [966, 379, 419, 236, 3],
+    'semanal-fibra': [1417, 379, 419, 110, 4], 'semanal-cobre': [1417, 507, 419, 108, 4]
   };
 
   /* ---------- esquema de formularios (qué se puede editar en cada tipo de caja) ---------- */
@@ -294,9 +295,10 @@
     return i;
   }
   function titlePosInput(key) {
+    const real = key === 'x' || key === 'y';   // X e Y en píxeles reales 4K; el tamaño de letra no cambia
     const i = el('input', { type: 'number', step: '1' });
-    i.value = data.ui.title_pos[key];
-    i.addEventListener('input', () => { const n = parseFloat(i.value); if (isFinite(n)) { data.ui.title_pos[key] = n; changed('all'); } });
+    i.value = real ? Math.round(data.ui.title_pos[key] * PX) : data.ui.title_pos[key];
+    i.addEventListener('input', () => { const n = parseFloat(i.value); if (isFinite(n)) { data.ui.title_pos[key] = real ? n / PX : n; changed('all'); } });
     return i;
   }
   function bgColorInput(i) {
@@ -314,14 +316,16 @@
   function posSection(b) {
     const grid = el('div', { class: 'e-posgrid' });
     posInputs[b.id] = {};
-    [['x', 'X'], ['y', 'Y'], ['w', 'Ancho'], ['h', 'Alto'], ['step', 'Orden']].forEach(([k, lab]) => {
-      const i = el('input', { type: 'number', step: '1' }); i.value = b[k] ?? 0;
-      i.addEventListener('input', () => { const n = parseFloat(i.value); if (isFinite(n)) { b[k] = n; changed(b); } });
+    [['x', 'X (px)'], ['y', 'Y (px)'], ['w', 'Ancho (px)'], ['h', 'Alto (px)'], ['step', 'Orden']].forEach(([k, lab]) => {
+      const real = k !== 'step';   // X/Y/Ancho/Alto en píxeles reales 4K; "Orden" es un número de secuencia
+      const i = el('input', { type: 'number', step: '1' }); i.value = real ? Math.round((b[k] ?? 0) * PX) : (b[k] ?? 0);
+      i.addEventListener('input', () => { const n = parseFloat(i.value); if (isFinite(n)) { b[k] = real ? n / PX : n; changed(b); } });
       posInputs[b.id][k] = i; grid.append(el('label', null, lab, i));
     });
+    const sf = data.meta.safe || CANVAS;
     return el('div', { class: 'e-pos' }, el('h5', null, 'Posición y tamaño'), grid,
-      el('small', null, `Coordenadas en el lienzo de edición (1920 × 1080 px = la mitad exacta de la pantalla real, ${CANVAS.w} × ${CANVAS.h} px).`),
-      el('small', null, 'También puedes arrastrar la caja en la vista previa y cambiar su tamaño con los cuadraditos (con Alt se mueve sin cuadrícula; con las flechas del teclado, de 1 en 1 px, o de 10 en 10 con Mayús). Las cajas con el mismo "Orden" aparecen a la vez.'));
+      el('small', null, `Coordenadas en píxeles de la pantalla real (${CANVAS.w} × ${CANVAS.h} px), contados desde la esquina superior izquierda (0, 0). Zona visible: ${sf.w} × ${sf.h} px.`),
+      el('small', null, 'También puedes arrastrar la caja en la vista previa y cambiar su tamaño con los cuadraditos (con Alt se mueve sin cuadrícula; con las flechas del teclado, de 2 en 2 px, o de 20 en 20 con Mayús). Las cajas con el mismo "Orden" aparecen a la vez.'));
   }
   function boxForm(b) {
     const ctx = { changed: () => changed(b) };
@@ -435,7 +439,7 @@
     stage.append(s);
   }
   function select(id) { selId = id; drawSel(); openAcc(id); }
-  function syncPos(b) { const p = posInputs[b.id]; if (p) ['x', 'y', 'w', 'h'].forEach(k => { p[k].value = Math.round(b[k]); }); }
+  function syncPos(b) { const p = posInputs[b.id]; if (p) ['x', 'y', 'w', 'h'].forEach(k => { p[k].value = Math.round(b[k] * PX); }); }
   function fit() {
     const pv = $('#e-pv'), w = pv.clientWidth - 24, h = pv.clientHeight - 24;
     scale = Math.max(.1, Math.min(w / 1920, h / 1080));

@@ -48,10 +48,10 @@ window.DASHBOARD_DATA = {
     {
       "id": "img-trafico-movil",
       "type": "image",
-      "x": 48,
+      "x": 50,
       "y": 86,
-      "w": 429,
-      "h": 160,
+      "w": 419,
+      "h": 252,
       "step": 0,
       "title": {
         "es": "Evolución del tráfico móvil en España por provincia y municipio",
@@ -62,10 +62,10 @@ window.DASHBOARD_DATA = {
     {
       "id": "img-telxius",
       "type": "image",
-      "x": 513,
+      "x": 508,
       "y": 86,
-      "w": 429,
-      "h": 160,
+      "w": 419,
+      "h": 252,
       "step": 0,
       "title": {
         "es": "Mapa de la red de Telxius",
@@ -76,10 +76,10 @@ window.DASHBOARD_DATA = {
     {
       "id": "img-red-internacional",
       "type": "image",
-      "x": 978,
+      "x": 966,
       "y": 86,
-      "w": 429,
-      "h": 160,
+      "w": 419,
+      "h": 252,
       "step": 0,
       "title": {
         "es": "Mapa de la red internacional de Telefónica",
@@ -90,10 +90,10 @@ window.DASHBOARD_DATA = {
     {
       "id": "img-red-ip",
       "type": "image",
-      "x": 1443,
+      "x": 1417,
       "y": 86,
-      "w": 429,
-      "h": 160,
+      "w": 419,
+      "h": 252,
       "step": 0,
       "title": {
         "es": "La red internacional IP de Telefónica",
@@ -104,10 +104,10 @@ window.DASHBOARD_DATA = {
     {
       "id": "red-en-cifras",
       "type": "network",
-      "x": 48,
-      "y": 256,
-      "w": 429,
-      "h": 389,
+      "x": 50,
+      "y": 379,
+      "w": 419,
+      "h": 236,
       "step": 1,
       "title": {
         "es": "La red de Telefónica en cifras",
@@ -333,10 +333,10 @@ window.DASHBOARD_DATA = {
     {
       "id": "trafico-total",
       "type": "area",
-      "x": 513,
-      "y": 256,
-      "w": 429,
-      "h": 190,
+      "x": 508,
+      "y": 379,
+      "w": 419,
+      "h": 110,
       "step": 2,
       "title": {
         "es": "Evolución del tráfico total de Internet en la red de Telefónica",
@@ -353,10 +353,10 @@ window.DASHBOARD_DATA = {
     {
       "id": "consumo-medio",
       "type": "stat",
-      "x": 513,
-      "y": 456,
-      "w": 429,
-      "h": 189,
+      "x": 508,
+      "y": 507,
+      "w": 419,
+      "h": 108,
       "step": 2,
       "title": {
         "es": "Consumo medio de tráfico por usuario de Telefónica",
@@ -402,10 +402,10 @@ window.DASHBOARD_DATA = {
     {
       "id": "trafico-categorias",
       "type": "stacked",
-      "x": 978,
-      "y": 256,
-      "w": 429,
-      "h": 389,
+      "x": 966,
+      "y": 379,
+      "w": 419,
+      "h": 236,
       "step": 3,
       "title": {
         "es": "Evolución del tráfico por categoría de servicios",
@@ -502,10 +502,10 @@ window.DASHBOARD_DATA = {
     {
       "id": "semanal-fibra",
       "type": "multi",
-      "x": 1443,
-      "y": 256,
-      "w": 429,
-      "h": 190,
+      "x": 1417,
+      "y": 379,
+      "w": 419,
+      "h": 110,
       "step": 4,
       "title": {
         "es": "Evolución semanal del tráfico por acceso de fibra, acceso cobre residencial, acceso fijo empresas y acceso móvil residencial y de empresas",
@@ -569,10 +569,10 @@ window.DASHBOARD_DATA = {
     {
       "id": "semanal-cobre",
       "type": "multi",
-      "x": 1443,
-      "y": 456,
-      "w": 429,
-      "h": 189,
+      "x": 1417,
+      "y": 507,
+      "w": 419,
+      "h": 108,
       "step": 4,
       "title": {
         "es": "Evolución semanal del tráfico por acceso cobre residencial, acceso fijo empresas y acceso móvil residencial y de empresas",

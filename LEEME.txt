@@ -114,6 +114,7 @@ LA RED DE TELEFÓNICA EN CIFRAS  ·  dashboard local + editor
    img/                   Imágenes de los 4 paneles superiores (panel1.png … panel4.png)
    img/flags/              Las 48 banderas
    css/ y js/              Diseño y motor (no hace falta tocarlos)
+   Documentacion/         Coordenadas de las cajas, imágenes de referencia con reglas y pendientes (empieza por README.md)
 
    Consejo: haz una copia de data/datos.js antes de cambios grandes.
 

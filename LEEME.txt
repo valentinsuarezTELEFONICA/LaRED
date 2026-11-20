@@ -25,8 +25,10 @@ LA RED DE TELEFÓNICA EN CIFRAS  ·  dashboard local + editor
    - Para MOVER una caja: arrástrala. Para cambiar su TAMAÑO: usa los
      cuadraditos del borde. También se puede escribir X, Y, Ancho y Alto.
      "Orden" = cuándo aparece en la animación (las que tienen el mismo número
-     aparecen a la vez). Estas coordenadas se escriben en un lienzo de
-     1920 x 1080 px, que es exactamente la mitad de la pantalla real 4K.
+     aparecen a la vez). X, Y, Ancho y Alto se escriben en PÍXELES REALES de
+     la pantalla 4K (3840 x 2160), contados desde la esquina superior
+     izquierda (0, 0). Ejemplo: la primera caja de arriba es X=100, Y=172,
+     Ancho=838, Alto=504. Lo mismo vale para X e Y del título.
    - Series de números (gráficos): separa con espacios o saltos de línea.
      Se puede pegar una columna de Excel.
    - Para cambiar una IMAGEN: "Elegir imagen…". Se copia sola a la carpeta img
@@ -116,8 +118,9 @@ LA RED DE TELEFÓNICA EN CIFRAS  ·  dashboard local + editor
    Consejo: haz una copia de data/datos.js antes de cambios grandes.
 
 8) NOTAS TÉCNICAS
-   - El diseño se edita siempre en un lienzo de 1920 x 1080 px; index.html lo
-     escala x2 y lo ancla en (0,0) para la pantalla real de 3840 x 2160 px
+   - El editor muestra las coordenadas en píxeles reales 4K, pero internamente
+     se guardan en un lienzo de 1920 x 1080 (la mitad: x/2, y/2, ancho/2, alto/2);
+     index.html lo escala x2 y lo ancla en (0,0) para la pantalla real de 3840 x 2160 px
      (configurable en data.meta.canvas, dentro de datos.js).
    - Los datos van en datos.js y no en un .json suelto porque el navegador
      bloquea leer archivos JSON desde un HTML abierto en local.

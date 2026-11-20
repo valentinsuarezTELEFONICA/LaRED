@@ -1,0 +1,158 @@
+{
+  "_nota": "SOLO DE REFERENCIA: el dashboard no lee este archivo. Valores en píxeles reales de la pantalla 4K (3840x2160), origen arriba a la izquierda. Derivados de data/datos.js (que guarda la mitad: lienzo 1920x1080).",
+  "pantalla": {
+    "ancho": 3840,
+    "alto": 2160
+  },
+  "zona_visible": {
+    "ancho": 3784,
+    "alto": 1290
+  },
+  "titulo": {
+    "x": 96,
+    "y": 72,
+    "_tamano_letra_unidades_de_diseno": 34
+  },
+  "cajas": [
+    {
+      "n": 1,
+      "id": "img-trafico-movil",
+      "titulo": "Evolución del tráfico móvil en España por provincia y municipio",
+      "x": 100,
+      "y": 172,
+      "ancho": 838,
+      "alto": 504,
+      "derecha": 938,
+      "abajo": 676,
+      "orden": 0
+    },
+    {
+      "n": 2,
+      "id": "img-telxius",
+      "titulo": "Mapa de la red de Telxius",
+      "x": 1016,
+      "y": 172,
+      "ancho": 838,
+      "alto": 504,
+      "derecha": 1854,
+      "abajo": 676,
+      "orden": 0
+    },
+    {
+      "n": 3,
+      "id": "img-red-internacional",
+      "titulo": "Mapa de la red internacional de Telefónica",
+      "x": 1932,
+      "y": 172,
+      "ancho": 838,
+      "alto": 504,
+      "derecha": 2770,
+      "abajo": 676,
+      "orden": 0
+    },
+    {
+      "n": 4,
+      "id": "img-red-ip",
+      "titulo": "La red internacional IP de Telefónica",
+      "x": 2834,
+      "y": 172,
+      "ancho": 838,
+      "alto": 504,
+      "derecha": 3672,
+      "abajo": 676,
+      "orden": 0
+    },
+    {
+      "n": 5,
+      "id": "red-en-cifras",
+      "titulo": "La red de Telefónica en cifras",
+      "x": 100,
+      "y": 758,
+      "ancho": 838,
+      "alto": 472,
+      "derecha": 938,
+      "abajo": 1230,
+      "orden": 1
+    },
+    {
+      "n": 6,
+      "id": "trafico-total",
+      "titulo": "Evolución del tráfico total de Internet en la red de Telefónica",
+      "x": 1016,
+      "y": 758,
+      "ancho": 838,
+      "alto": 220,
+      "derecha": 1854,
+      "abajo": 978,
+      "orden": 2
+    },
+    {
+      "n": 7,
+      "id": "consumo-medio",
+      "titulo": "Consumo medio de tráfico por usuario de Telefónica",
+      "x": 1016,
+      "y": 1014,
+      "ancho": 838,
+      "alto": 216,
+      "derecha": 1854,
+      "abajo": 1230,
+      "orden": 2
+    },
+    {
+      "n": 8,
+      "id": "trafico-categorias",
+      "titulo": "Evolución del tráfico por categoría de servicios",
+      "x": 1932,
+      "y": 758,
+      "ancho": 838,
+      "alto": 472,
+      "derecha": 2770,
+      "abajo": 1230,
+      "orden": 3
+    },
+    {
+      "n": 9,
+      "id": "semanal-fibra",
+      "titulo": "Evolución semanal del tráfico por acceso de fibra, acceso cobre residencial, acceso fijo empresas y acceso móvil residencial y de empresas",
+      "x": 2834,
+      "y": 758,
+      "ancho": 838,
+      "alto": 220,
+      "derecha": 3672,
+      "abajo": 978,
+      "orden": 4
+    },
+    {
+      "n": 10,
+      "id": "semanal-cobre",
+      "titulo": "Evolución semanal del tráfico por acceso cobre residencial, acceso fijo empresas y acceso móvil residencial y de empresas",
+      "x": 2834,
+      "y": 1014,
+      "ancho": 838,
+      "alto": 216,
+      "derecha": 3672,
+      "abajo": 1230,
+      "orden": 4
+    }
+  ],
+  "cabecera_estimada_de_la_captura": {
+    "_nota": "Medido a ojo sobre tu captura (±3 px); no está en el proyecto.",
+    "franja": {
+      "x": 0,
+      "y": 0,
+      "ancho": 3840,
+      "alto": 134
+    },
+    "logo_circular": {
+      "centro_x": 3302,
+      "centro_y": 69,
+      "diametro": 92
+    },
+    "botones": {
+      "x": 3375,
+      "y": 29,
+      "ancho": 296,
+      "alto": 79
+    }
+  }
+}

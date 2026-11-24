@@ -6,7 +6,7 @@
 
 1. **Subir a GitHub** lo actual y mantener la documentación sincronizada. *(En curso: ver nota al final.)*
 2. **Maquetar caja por caja** para que cuadre con el diseño original del usuario y entren todos los datos. Ejemplo dado: en "Tráfico por categoría" su diseño cabían dos estadísticas; en el proyecto sale una enorme y la otra mínima. Hay que adaptarlo a los mismos tamaños y maquetar mejor (se aceptan cambios).
-3. **Cabecera:** donde se elige idioma, mostrar la **bandera** del idioma activo en lugar de "ES" / "EN".
+3. **Cabecera:** donde se elige idioma, mostrar la **bandera** del idioma activo en lugar de "ES" / "EN". ✅ *Hecho 24/11: bandera redonda del idioma activo (ES=es.png, EN=gb.png); al pulsarla cambia de idioma. La tecla L sigue funcionando.*
 4. **Logo de Telefónica** en la cabecera, configurable desde el editor, a la **izquierda** del selector de idioma.
 
 ## Consecuencias de las nuevas medidas (alta prioridad, bloquea el punto 2)

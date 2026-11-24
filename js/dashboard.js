@@ -300,8 +300,7 @@
         build(stage, d, l);
         const hdr = stage.querySelector('header');
         hdr.insertAdjacentHTML('beforeend', `<div class="ctl">
-          <button data-lang="es" class="${l === 'es' ? 'on' : ''}">ES</button>
-          <button data-lang="en" class="${l === 'en' ? 'on' : ''}">EN</button>
+          <button data-lang="${l === 'es' ? 'en' : 'es'}" class="lang" title="${l === 'es' ? 'Español · pulsa para cambiar a English' : 'English · click to switch to Español'}" aria-label="${l === 'es' ? 'Idioma: español. Cambiar a inglés' : 'Language: English. Switch to Spanish'}"><img src="img/flags/${l === 'es' ? 'es' : 'gb'}.png" alt="${l === 'es' ? 'ES' : 'EN'}"></button>
           <button data-act="rp" title="${esc(t(d.ui.replay))}" aria-label="${esc(t(d.ui.replay))}">&#8635;</button>
           <button data-act="fs" title="${esc(t(d.ui.full))}" aria-label="${esc(t(d.ui.full))}">&#9974;</button></div>`);
         hdr.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => { l = b.dataset.lang; restart(); });

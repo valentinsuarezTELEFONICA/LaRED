@@ -131,9 +131,16 @@ body.idle .ctl{opacity:0}
 .legend div{display:flex;align-items:center;gap:6px;white-space:nowrap}
 .legend i{width:9px;height:9px;border-radius:2px;flex:none}
 .legend em{font-style:normal;color:var(--mut);margin-left:auto}
-.dl{display:flex;align-items:center;gap:14px;margin-top:10px;flex:none}
-.dl svg{width:150px;height:150px;flex:none}
-.dl .legend{flex:1}
+/* Tráfico por categorías: área a la izquierda; a la derecha, leyenda (2 columnas) y donut debajo */
+.card .body.cat{flex-direction:row;gap:14px;align-items:stretch}
+.cat .host{flex:1 1 0;min-width:0}
+.catr{flex:0 0 56%;min-width:0;display:flex;flex-direction:column;gap:8px}
+.catr .legend{flex:none;grid-template-columns:auto auto;justify-content:space-between;column-gap:4px;row-gap:3px;font-size:8.5px;grid-auto-flow:column;grid-template-rows:repeat(5,auto)}
+.catr .legend div{gap:4px}
+.catr .legend em{margin-left:auto;padding-left:3px}
+.catr .legend i{width:8px;height:8px}
+.catr .dn{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:center}
+.catr .dn svg{height:100%;width:auto;max-width:100%;aspect-ratio:1/1;display:block}
 .multi-legend{margin-top:8px;flex:none}
 
 /* mensaje de error */

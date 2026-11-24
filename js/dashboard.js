@@ -194,10 +194,10 @@
           acc += share;
         });
         ds += '</g></svg>';
-        const lg = S.map(sr => `<div><i style="background:${esc(sr.color)}"></i>${esc(t(sr.name))}<em>${Math.round(val(sr) / tot * 100)}%</em></div>`).join('');
-        donut = `<div class="dl">${ds}<div class="legend">${lg}</div></div>`;
+        const lg = S.map(sr => `<div><i style="background:${esc(sr.color)}"></i><span>${esc(t(sr.name))}</span><em>${Math.round(val(sr) / tot * 100)}%</em></div>`).join('');
+        donut = `<div class="catr"><div class="legend">${lg}</div><div class="dn">${ds}</div></div>`;
       }
-      return card(b, host(b, 'stacked') + donut);
+      return card(b, host(b, 'stacked') + donut, 'cat');
     },
     multi(b) {
       const lg = (b.series || []).map(sr => `<div><i style="background:${esc(sr.color)}"></i>${esc(t(sr.name))}</div>`).join('');

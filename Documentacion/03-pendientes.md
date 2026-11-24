@@ -18,9 +18,21 @@ Al ajustar el layout a la captura 4K, las tarjetas inferiores son más bajas que
 
 Solución prevista: **auto-fit por caja** (medir `scrollHeight` frente al alto y escalar o ajustar tipografía/paddings) y/o rediseñar cada tarjeta para su tamaño. Ampliar `markOverflow` del editor para avisar del desborde interno, no solo de la zona no visible.
 
+## Maquetación caja por caja (punto 2) — estado
+
+| Caja | Estado |
+|---|---|
+| 8 · Tráfico por categoría | ✅ 24/11: área a la izquierda (≈40 %), leyenda en 2 columnas (nombre + %) y donut debajo, en la columna derecha (56 %). Letra de leyenda 8,5 (×2 en 4K). Sin recortes en ES ni EN. |
+| 5 · La red de Telefónica en cifras | ⏳ siguiente: pierde la parte inferior |
+| 6 · Tráfico total de Internet | ⏳ queda sin gráfico (110 de alto) |
+| 7 · Consumo medio por usuario | ⏳ se corta el segundo bloque |
+| 9 y 10 · Semanales | ⏳ cortan la leyenda |
+
+Método: modificar solo `js/dashboard.js` (RENDER de ese tipo) y `css/dashboard.css`; medir con Playwright (caja, gráfico, leyenda, donut y desborde) en ES y EN; captura a 4K; `node tests/smoke.js`; commit en rama y fusionar en `main`.
+
 ## Del HANDOFF (siguen abiertos)
 
-- Leyenda del donut en "Tráfico por categoría": la segunda columna pierde el % por la derecha.
+- ~~Leyenda del donut en "Tráfico por categoría": la segunda columna pierde el % por la derecha.~~ ✅ Resuelto 24/11 al rehacer la caja.
 - Textos pequeños poco legibles (muchas fuentes de ~7–9 px de diseño ×2).
 - Etiquetas del eje X del "consumo energético" (2018…2025) pegadas.
 - Leer `CANVAS` desde `meta` en el editor (hoy `CANVAS` y `DESIGN_SCALE` están fijos en el código, y la constante nueva `PX` depende de ellos).

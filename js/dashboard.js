@@ -248,7 +248,7 @@
     let hdr = '';
     if (lg.enabled && lg.src) hdr += `<img class="hdr-logo" src="${esc(imageOverrides[lg.src] || lg.src)}" alt="Telefónica" style="height:${lh}px" onerror="this.classList.add('missing')">`;
     else if (lg.enabled && opts.editor) hdr += `<span class="hdr-logo ph" style="height:${lh}px;min-width:${lh}px">LOGO</span>`;
-    if (opts.editor) hdr += `<div class="ctl ghost"><button class="lang"><img src="img/flags/${lang === 'en' ? 'gb' : 'es'}.png" alt=""></button><button>&#8635;</button><button>&#9974;</button></div>`;
+    if (opts.editor) hdr += `<div class="ctl ghost"><button class="lang ${lang === 'en' ? '' : 'on'}"><img src="img/flags/es.png" alt=""></button><button class="lang ${lang === 'en' ? 'on' : ''}"><img src="img/flags/gb.png" alt=""></button><button>&#8635;</button><button>&#9974;</button></div>`;
     stage.innerHTML = `<header>${hdr}</header><h1 class="dash-title" style="left:${tx}px;top:${ty}px;font-size:${ts}px">${esc(t(d.ui.title))}</h1>` + d.boxes.map(boxHTML).join('');
     const bg = (d.meta.bg && d.meta.bg.length >= 2) ? d.meta.bg : ['#67769b', '#7b88a8', '#56648b', '#2c3653', '#232c46'];
     const n = bg.length - 1;
@@ -307,10 +307,11 @@
         build(stage, d, l);
         const hdr = stage.querySelector('header');
         hdr.insertAdjacentHTML('beforeend', `<div class="ctl">
-          <button data-lang="${l === 'es' ? 'en' : 'es'}" class="lang" title="${l === 'es' ? 'Español · pulsa para cambiar a English' : 'English · click to switch to Español'}" aria-label="${l === 'es' ? 'Idioma: español. Cambiar a inglés' : 'Language: English. Switch to Spanish'}"><img src="img/flags/${l === 'es' ? 'es' : 'gb'}.png" alt="${l === 'es' ? 'ES' : 'EN'}"></button>
+          <button data-lang="es" class="lang ${l === 'es' ? 'on' : ''}" title="Español" aria-label="Español" aria-pressed="${l === 'es'}"><img src="img/flags/es.png" alt="ES"></button>
+          <button data-lang="en" class="lang ${l === 'en' ? 'on' : ''}" title="English" aria-label="English" aria-pressed="${l === 'en'}"><img src="img/flags/gb.png" alt="EN"></button>
           <button data-act="rp" title="${esc(t(d.ui.replay))}" aria-label="${esc(t(d.ui.replay))}">&#8635;</button>
           <button data-act="fs" title="${esc(t(d.ui.full))}" aria-label="${esc(t(d.ui.full))}">&#9974;</button></div>`);
-        hdr.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => { l = b.dataset.lang; restart(); });
+        hdr.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => { if (b.dataset.lang !== l) { l = b.dataset.lang; restart(); } });
         hdr.querySelector('[data-act=rp]').onclick = restart;
         hdr.querySelector('[data-act=fs]').onclick = toggleFull;
         void stage.offsetWidth;

@@ -242,7 +242,14 @@
     data = d; lang = l || 'es'; opts = opts || {};
     stage.classList.toggle('static', !!opts.instant);
     const ti = d.ui.title_pos || {}, tx = num(ti.x) || 48, ty = num(ti.y) || 36, ts = num(ti.size) || 34;
-    stage.innerHTML = `<header></header><h1 class="dash-title" style="left:${tx}px;top:${ty}px;font-size:${ts}px">${esc(t(d.ui.title))}</h1>` + d.boxes.map(boxHTML).join('');
+    /* Logo (data.ui.logo = {enabled, src, height}) a la izquierda del selector de idioma.
+       En el editor (opts.editor) se pinta además un selector de muestra para ver su sitio real. */
+    const lg = d.ui.logo || {}, lh = num(lg.height) || 40;
+    let hdr = '';
+    if (lg.enabled && lg.src) hdr += `<img class="hdr-logo" src="${esc(imageOverrides[lg.src] || lg.src)}" alt="Telefónica" style="height:${lh}px" onerror="this.classList.add('missing')">`;
+    else if (lg.enabled && opts.editor) hdr += `<span class="hdr-logo ph" style="height:${lh}px;min-width:${lh}px">LOGO</span>`;
+    if (opts.editor) hdr += `<div class="ctl ghost"><button class="lang"><img src="img/flags/${lang === 'en' ? 'gb' : 'es'}.png" alt=""></button><button>&#8635;</button><button>&#9974;</button></div>`;
+    stage.innerHTML = `<header>${hdr}</header><h1 class="dash-title" style="left:${tx}px;top:${ty}px;font-size:${ts}px">${esc(t(d.ui.title))}</h1>` + d.boxes.map(boxHTML).join('');
     const bg = (d.meta.bg && d.meta.bg.length >= 2) ? d.meta.bg : ['#67769b', '#7b88a8', '#56648b', '#2c3653', '#232c46'];
     const n = bg.length - 1;
     stage.style.background = 'linear-gradient(180deg,' + bg.map((c, i) => `${c} ${Math.round(i / n * 100)}%`).join(',') + ')';

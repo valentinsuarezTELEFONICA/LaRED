@@ -23,6 +23,10 @@ body.idle .ctl{opacity:0}
 .ctl button{font:600 15px var(--font);border:0;background:transparent;color:#3a4566;padding:8px 14px;border-radius:4px;cursor:pointer}
 .ctl button:hover{background:#eef1f8}
 .ctl button.on{background:#0a5cff;color:#fff}
+.hdr-logo{display:block;object-fit:contain;margin-right:24px;flex:none}
+.hdr-logo.missing{display:none}
+.hdr-logo.ph{display:flex;align-items:center;justify-content:center;padding:0 14px;border:2px dashed rgba(255,255,255,.75);border-radius:8px;color:#fff;font:700 13px var(--font);letter-spacing:.08em}
+.ctl.ghost{pointer-events:none}
 .ctl button.lang{padding:4px 8px;display:flex;align-items:center}
 .ctl button.lang img{width:28px;height:28px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 0 0 1px rgba(0,0,0,.15)}
 .ctl button:focus-visible{outline:2px solid #0a5cff;outline-offset:1px}

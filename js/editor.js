@@ -339,6 +339,19 @@
     acc.append(inner);
     return acc;
   }
+  function logoSection() {            // logo de Telefónica, a la izquierda del selector de idioma
+    const lg = data.ui.logo = data.ui.logo || { enabled: false, src: '', height: 40 };
+    const chk = el('input', { type: 'checkbox' }); chk.checked = !!lg.enabled;
+    chk.addEventListener('change', () => { lg.enabled = chk.checked; changed('all'); });
+    const inp = el('input', { type: 'text', placeholder: 'img/logo-telefonica.png' }); inp.value = lg.src || '';
+    inp.addEventListener('input', () => { lg.src = inp.value.trim(); changed('all'); });
+    const btn = el('button', { class: 'e-mini', type: 'button', onclick: () => pickImage(p => { lg.src = p; inp.value = p; lg.enabled = true; chk.checked = true; changed('all'); }) }, 'Elegir imagen…');
+    return el('div', { class: 'e-pos' }, el('h5', null, 'Logo de Telefónica (a la izquierda del selector de idioma)'),
+      el('label', { class: 'e-chk' }, chk, 'Mostrar el logo en la cabecera'),
+      el('div', { class: 'e-imgrow' }, inp, btn),
+      el('label', null, 'Alto del logo (unidades de diseño; en la pantalla 4K ocupa el doble)', sizeInput(lg, 'height', 40)),
+      el('small', null, 'Mejor un PNG con fondo transparente (o SVG). Se copia a la carpeta img al guardar. El alto por defecto, 40, son 80 px en la pantalla 4K, parecido al del selector de idioma.'));
+  }
   function buildForm() {
     const root = $('#e-form'); root.innerHTML = '';
     Object.keys(posInputs).forEach(k => delete posInputs[k]);
@@ -353,6 +366,7 @@
           el('label', null, 'X', titlePosInput('x')),
           el('label', null, 'Y', titlePosInput('y')),
           el('label', null, 'Tamaño de letra', titlePosInput('size')))),
+      logoSection(),
       el('div', { class: 'e-pos' }, el('h5', null, 'Color de fondo de la pantalla (degradado de arriba a abajo)'),
         el('div', { class: 'e-bgrow' }, data.meta.bg.map((_, i) => bgColorInput(i)))),
       el('div', { class: 'e-posgrid', style: 'grid-template-columns:1fr 1fr;margin-top:10px' },
@@ -407,7 +421,7 @@
       if (all) rebuild(); else { boxes.forEach(b => D.fillBox(stage, b)); drawSel(); markOverflow(); }
     }, 90);
   }
-  function rebuild() { playing = false; D.build(stage, data, lang, { instant: true }); drawSel(); drawSafe(); markOverflow(); }
+  function rebuild() { playing = false; D.build(stage, data, lang, { instant: true, editor: true }); drawSel(); drawSafe(); markOverflow(); }
   function drawSafe() {
     const old = stage.querySelector('#e-safe'); if (old) old.remove();
     const safe = data.meta.safe || {};
@@ -505,7 +519,7 @@
   }));
   $('#e-play').addEventListener('click', () => {
     const s = stage.querySelector('#e-sel'); if (s) s.remove();
-    playing = true; D.build(stage, data, lang, { instant: false }); void stage.offsetWidth; D.play(stage, data);
+    playing = true; D.build(stage, data, lang, { instant: false, editor: true }); void stage.offsetWidth; D.play(stage, data);
     say('Reproduciendo la animación. En cuanto edites algo, vuelves a la vista de edición.');
   });
   $('#e-lock').addEventListener('change', e => { locked = e.target.checked; $('#e-pvwrap').classList.toggle('locked', locked); });
@@ -544,7 +558,9 @@
     $('#e-dlg-ok').onclick = () => { dlg.close(); res(true); }; $('#e-dlg-cancel').onclick = () => { dlg.close(); res(false); };
     dlg.showModal();
   });
-  const usedImages = () => new Set(data.boxes.filter(b => b.image).flatMap(b => typeof b.image === 'object' ? [b.image.es, b.image.en] : [b.image]));
+  const usedImages = () => new Set([
+    ...data.boxes.filter(b => b.image).flatMap(b => typeof b.image === 'object' ? [b.image.es, b.image.en] : [b.image]),
+    ...((data.ui.logo && data.ui.logo.enabled && data.ui.logo.src) ? [data.ui.logo.src] : [])]);
 
   async function save() {
     if (window.showDirectoryPicker) {

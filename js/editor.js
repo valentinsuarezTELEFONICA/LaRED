@@ -607,19 +607,50 @@
     say('Se ha descargado datos.js: cópialo en la carpeta "data" reemplazando el existente.' + (imgs.length ? ' Copia también a la carpeta "img" estas imágenes: ' + imgs.map(p => p.replace('img/', '')).join(', ') + '.' : ''), 'ok');
   }
   $('#e-save').addEventListener('click', save);
-  $('#e-export').addEventListener('click', () => { download('dashboard.json', jsonText(), 'application/json'); say('JSON exportado.', 'ok'); });
-  $('#e-import').addEventListener('click', () => $('#e-file-json').click());
+  /* El título del diálogo ("Abrir", "Guardar como") lo pone el sistema y una web no puede cambiarlo.
+     Lo que sí se puede: avisar en la barra de estado, rellenar "Nombre" al exportar y escribir el
+     archivo a buscar en el desplegable de tipo de archivo (abajo a la derecha) al importar. */
+  const JSON_NAME = 'dashboard.json', JSON_HINT = 'Selecciona el archivo data/dashboard.json';
+  const askJSON = (title, ok) => new Promise(res => {          // aviso previo: el título del diálogo del sistema no se puede cambiar
+    const dlg = $('#e-dlg-json');
+    $('#e-dj-t').textContent = title; $('#e-dj-p').innerHTML = '<b>' + JSON_HINT + '</b>'; $('#e-dj-ok').textContent = ok;
+    $('#e-dj-ok').onclick = () => { dlg.close(); res(true); }; $('#e-dj-cancel').onclick = () => { dlg.close(); res(false); };
+    dlg.addEventListener('cancel', () => res(false), { once: true });
+    dlg.showModal();
+  });
+  function loadImported(text) {
+    try {
+      const d = JSON.parse(String(text).replace(/^\s*window\.DASHBOARD_DATA\s*=\s*/, '').replace(/;\s*$/, ''));
+      if (!d || !Array.isArray(d.boxes) || !d.meta || !d.ui) throw new Error('formato');
+      data = d; ensureMeta(data); selId = null; buildForm(); rebuild(); setDirty(); say('Datos importados. Revisa y pulsa Guardar cambios.', 'ok');
+    } catch (_) { say('Ese archivo no tiene el formato esperado (JSON del dashboard).', 'err'); }
+  }
+  $('#e-export').addEventListener('click', async () => {
+    if (!(await askJSON('Exportar JSON', 'Elegir dónde guardar'))) return say('Exportación cancelada.');
+    if (window.showSaveFilePicker) {
+      try {
+        const fh = await window.showSaveFilePicker({ suggestedName: JSON_NAME, id: 'lared-json', types: [{ description: JSON_HINT, accept: { 'application/json': ['.json'] } }] });
+        const w = await fh.createWritable(); await w.write(jsonText()); await w.close();
+        return say('JSON exportado como "' + fh.name + '".', 'ok');
+      } catch (err) { if (err && err.name === 'AbortError') return say('Exportación cancelada.'); console.error(err); }
+    }
+    download(JSON_NAME, jsonText(), 'application/json'); say('JSON exportado (' + JSON_NAME + ').', 'ok');
+  });
+  $('#e-import').addEventListener('click', async () => {
+    if (!(await askJSON('Importar JSON', 'Elegir archivo'))) return say('Importación cancelada.');
+    if (window.showOpenFilePicker) {
+      try {
+        const opts = { id: 'lared-json', excludeAcceptAllOption: true, types: [{ description: JSON_HINT, accept: { 'application/json': ['.json'] } }] };
+        if (dirHandle) opts.startIn = dirHandle;
+        const [fh] = await window.showOpenFilePicker(opts);
+        return loadImported(await (await fh.getFile()).text());
+      } catch (err) { if (err && err.name === 'AbortError') return say('Importación cancelada.'); console.error(err); }
+    }
+    $('#e-file-json').click();
+  });
   $('#e-file-json').addEventListener('change', e => {
     const f = e.target.files[0]; e.target.value = ''; if (!f) return;
-    const r = new FileReader();
-    r.onload = () => {
-      try {
-        const d = JSON.parse(String(r.result).replace(/^\s*window\.DASHBOARD_DATA\s*=\s*/, '').replace(/;\s*$/, ''));
-        if (!d || !Array.isArray(d.boxes) || !d.meta || !d.ui) throw new Error('formato');
-        data = d; ensureMeta(data); selId = null; buildForm(); rebuild(); setDirty(); say('Datos importados. Revisa y pulsa Guardar cambios.', 'ok');
-      } catch (_) { say('Ese archivo no tiene el formato esperado (JSON del dashboard).', 'err'); }
-    };
-    r.readAsText(f);
+    const r = new FileReader(); r.onload = () => loadImported(r.result); r.readAsText(f);
   });
 
   /* ---------- arranque ---------- */

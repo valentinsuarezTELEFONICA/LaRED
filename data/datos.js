@@ -128,7 +128,7 @@ window.DASHBOARD_DATA = {
                 "en": "UBB premises passed"
               },
               "value": 162,
-              "max": 220,
+              "max": 171,
               "prefix": "+",
               "unit": "M"
             },
@@ -138,7 +138,7 @@ window.DASHBOARD_DATA = {
                 "en": "UBB premises passed (own network)"
               },
               "value": 86,
-              "max": 220,
+              "max": 91,
               "prefix": "+",
               "unit": "M"
             }

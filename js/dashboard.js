@@ -43,7 +43,7 @@
   /* línea/área con animación de trazo (tendencia de la col. de red y gráfico de área) */
   function lineArea(o) {
     const k = o.k || 1;                          // factor de escala para huecos pequeños (1 = tamaño normal)
-    const W = o.W, H = o.H, L = 10 * k, R = W - 10 * k, T = 20 * k, B = H - (o.xl ? 22 * k : 8 * k);
+    const W = o.W, H = o.H, L = 10 * k, R = W - 10 * k, T = (o.top != null ? o.top : 20 * k), B = H - (o.pad != null ? o.pad : (o.xl ? 22 * k : 8 * k));
     const v = (o.values || []).map(num);
     if (v.length < 2 || B - T < 10 || R - L < 20) return '';
     const max = Math.max(...v, 1) * 1.08, id = uid(), c = o.color || '#5bc5f2', so = o.solid ? [.95, .8] : [.6, .05];
@@ -65,7 +65,8 @@
       const by = o.arrow ? q[1] : q[1] - 20 * k;
       s += `<g class="fadein"><rect x="${(q[0] - 28 * k).toFixed(1)}" y="${(by - 12 * k).toFixed(1)}" width="${56 * k}" height="${24 * k}" rx="${12 * k}" fill="#fff"/><text x="${q[0].toFixed(1)}" y="${(by + 4 * k).toFixed(1)}" text-anchor="middle" style="fill:#1f2a44;font-size:${12 * k}px;font-weight:700">${esc(o.badge)}</text></g>`;
     }
-    (o.xl || []).forEach(l => { s += `<text x="${(L + (R - L) * l.f).toFixed(1)}" y="${H - 6 * k}" text-anchor="middle"${k !== 1 ? ` style="font-size:${10 * k}px"` : ''}>${esc(l.text)}</text>`; });
+    if (o.mo) p.forEach((q, i) => { s += `<text x="${q[0].toFixed(1)}" y="${H - o.moY}" text-anchor="middle" style="font-size:${o.fs}px">${esc(o.mo[i % o.mo.length])}</text>`; });
+    (o.xl || []).forEach(l => { s += `<text x="${(L + (R - L) * l.f).toFixed(1)}" y="${H - (o.xlY != null ? o.xlY : 6 * k)}" text-anchor="middle"${(o.fs2 || k !== 1) ? ` style="font-size:${o.fs2 || 10 * k}px"` : ''}>${esc(l.text)}</text>`; });
     return s + '</svg>';
   }
 
@@ -91,17 +92,17 @@
   }
 
   function multiChart(b, Wd, H) {
-    const S = b.series || [], L = 4, R = Wd - 4, T = 8, B = H - 20;
+    const S = b.series || [], L = 3, R = Wd - 3, T = 5, B = H - 9;
     const n = Math.min(...S.map(s => (s.values || []).length));
     if (!S.length || !isFinite(n) || n < 7 || B - T < 10) return '';
-    const pd = n / 7, max = Math.max(...S.flatMap(s => s.values.slice(0, n).map(num)), 1) * 1.05;
+    const pd = n / 7, max = Math.max(...S.flatMap(s => s.values.slice(0, n).map(num)), 1) * 1.04;
     const xi = i => L + (R - L) * i / (n - 1);
     let s = `<svg viewBox="0 0 ${Wd} ${H}" role="img">`;
-    for (let d = 1; d < 7; d++) s += `<line x1="${xi(d * pd - .5).toFixed(1)}" x2="${xi(d * pd - .5).toFixed(1)}" y1="${T}" y2="${B + 4}" stroke="rgba(255,255,255,.12)"/>`;
-    s += `<line x1="${L}" x2="${R}" y1="${B}" y2="${B}" stroke="rgba(255,255,255,.3)"/>`;
-    S.forEach((sr, k) => { s += `<path class="draw" pathLength="1" style="--d:${(.3 + k * .25).toFixed(2)}s" d="${sp(pts(sr.values.slice(0, n).map(num), L, R, T, B, 0, max))}" fill="none" stroke="${esc(sr.color)}" stroke-width="1.7" stroke-linejoin="round"/>`; });
+    for (let g = 0; g <= 4; g++) { const y = B - (B - T) * g / 4; s += `<line x1="${L}" x2="${R}" y1="${y.toFixed(1)}" y2="${y.toFixed(1)}" stroke="rgba(255,255,255,${g ? .5 : .75})" stroke-width=".45"/>`; }
+    for (let d = 1; d < 7; d++) s += `<line x1="${xi(d * pd - .5).toFixed(1)}" x2="${xi(d * pd - .5).toFixed(1)}" y1="${T}" y2="${B + 2}" stroke="rgba(255,255,255,.14)" stroke-width=".4"/>`;
+    S.forEach((sr, k) => { s += `<path class="draw" pathLength="1" style="--d:${(.3 + k * .25).toFixed(2)}s" d="${sp(pts(sr.values.slice(0, n).map(num), L, R, T, B, 0, max))}" fill="none" stroke="${esc(sr.color)}" stroke-width="${k ? 1 : 1.35}" stroke-linejoin="round" stroke-linecap="round"/>`; });
     const days = t(b.days); const dn = Array.isArray(days) ? days : [];
-    dn.slice(0, 7).forEach((name, d) => { s += `<text x="${xi(d * pd + (pd - 1) / 2).toFixed(1)}" y="${H - 5}" text-anchor="middle" style="font-size:9px">${esc(name)}</text>`; });
+    dn.slice(0, 7).forEach((name, d) => { s += `<text x="${xi(d * pd + (pd - 1) / 2).toFixed(1)}" y="${H - 1.6}" text-anchor="middle" style="font-size:4.4px">${esc(name)}</text>`; });
     return s + '</svg>';
   }
 
@@ -119,8 +120,8 @@
   function gauge(it) {
     const p = pct(it.value, it.max), d = 'M10 52 A40 40 0 0 1 90 52';
     return `<div class="g"><svg viewBox="0 0 100 58"><path d="${d}" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="9" pathLength="100"/>
-      <path class="arc" d="${d}" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="9" pathLength="100" style="--a:${p};--b:${100 - p}"/>
-      <polygon class="needle" points="17,52 50,48.5 50,55.5" fill="#fff" style="--r:${(p * 1.8).toFixed(1)}deg"/></svg>
+      <path class="arc" d="${d}" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="9" pathLength="100" style="--a:${p};--b:200"/>
+      <g class="needle" style="--r:${(p * 1.8).toFixed(1)}deg"><path d="M7.5 52 L50 48.6 A3.4 3.4 0 0 1 50 55.4 Z" fill="#fff" stroke="#fff" stroke-width="2.4" stroke-linejoin="round"/><circle cx="50" cy="52" r="4.6" fill="#fff"/></g></svg>
       <p>${esc(t(it.label))}</p><div class="gv">${countSpan(it.value, it.dec, t(it.prefix))}<small>${esc(t(it.unit))}</small></div></div>`;
   }
   /* chip compacto: bandera arriba, valor debajo (sin repetir la etiqueta en cada fila) */
@@ -179,12 +180,12 @@
       const col = n => blocks.map((k, bi) => (num(k.col) || 1) === n ? blockHTML(b, k, bi) : '').join('');
       return card(b, `<div class="blocks2"><div class="bcol">${col(1)}</div><div class="bcol">${col(2)}</div></div>`, '', 'net');
     },
-    area(b) { return card(b, host(b, 'area')); },
+    area(b) { return card(b, host(b, 'area'), '', 'tot'); },
     stat(b) {
-      return card(b, (b.items || []).map(it => `<div class="srow"><div class="ic">${iconOrImage(it)}</div><div>
-        <h5>${esc(t(it.label))}</h5><p>${esc(t(it.text))}</p>
-        <div class="sv"><b>${countSpan(it.value, 0, '')}</b><small>${esc(t(it.unit))}</small></div>
-        <div class="bar"><i style="--w:${pct(it.value, it.max)}%"></i></div></div></div>`).join(''), 'center');
+      return card(b, (b.items || []).map(it => `<div class="srow"><div class="ic">${iconOrImage(it)}</div><div class="stx">
+        <h5>${esc(t(it.label))}:</h5><p>${esc(t(it.text))}</p></div>
+        <div class="sv"><div class="svn"><b>${countSpan(it.value, 0, '')}</b><small>${esc(t(it.unit))}</small></div>
+        <div class="bar"><i style="--w:${pct(it.value, it.max)}%"></i></div></div></div>`).join(''), 'center', 'cons');
     },
     stacked(b) {
       const S = b.series || [], n = Math.min(...S.map(s => (s.values || []).length));
@@ -204,16 +205,17 @@
       return card(b, host(b, 'stacked') + donut, 'cat');
     },
     multi(b) {
-      const lg = (b.series || []).map(sr => `<div><i style="background:${esc(sr.color)}"></i>${esc(t(sr.name))}</div>`).join('');
-      return card(b, host(b, 'multi') + `<div class="legend multi-legend">${lg}</div>`);
+      const lg = (b.series || []).map(sr => `<div><i style="background:${esc(sr.color)}"></i><span>${esc(t(sr.name))}</span></div>`).join('');
+      return card(b, host(b, 'multi') + `<div class="wk-lg">${lg}</div>`, 'wkb', 'wk');
     }
   };
 
+  const MONTHS = { es: ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'], en: ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'] };
   const DRAW = {
     trend: (b, W, H, blk) => lineArea({ W, H, k: .68, values: blk.values, dots: true, arrow: true, solid: true, badge: blk.badge, color: '#f4f6fb',
       xl: (blk.labels || []).map((x, i, a) => ({ f: i / Math.max(1, a.length - 1), text: x })) }),
-    area: (b, W, H) => lineArea({ W, H, values: b.values, grid: true, arrow: true, badge: b.badge, color: '#8a9bc4',
-      xl: (b.xLabels || []).map((x, i, a) => ({ f: (i + .5) / a.length, text: x })) }),
+    area: (b, W, H) => lineArea({ W, H, k: .6, top: 7, pad: 12.5, moY: 7.2, xlY: 1.6, fs: 3.6, fs2: 4.2, values: b.values, grid: true, arrow: true, solid: true, badge: b.badge, color: '#aab4d6',
+      mo: t(MONTHS), xl: (b.xLabels || []).map((x, i, a) => ({ f: (i + .5) / a.length, text: x })) }),
     stacked: (b, W, H) => stackedChart(b, W, H),
     multi: (b, W, H) => multiChart(b, W, H)
   };

@@ -48,6 +48,7 @@
     S('prefix', 'Prefijo (ej. +)'), S('unit', 'Unidad (ej. M)')];
   const CHIP = [{ k: 'code', label: 'País', kind: 'country' }, N('value', 'Valor'),
     N('max', 'Valor máximo', { hint: 'Para porcentajes, pon 100.' }), S('prefix', 'Prefijo (ej. +)'), S('unit', 'Unidad (ej. % o M)')];
+  const LINE = [T('label', 'Texto de la línea'), N('value', 'Valor'), S('prefix', 'Prefijo (ej. +)'), S('unit', 'Unidad (ej. M)')];
   const GROUP = [T('label', 'Etiqueta del grupo (ej. "Cobertura 5G")'),
     { k: 'items', label: 'Banderas', kind: 'list', fields: CHIP, summary: i => i.code || '' }];
   const ICON_HINT = 'Si subes tu propia imagen, se usa redonda en vez del icono. Tamaño recomendado: cuadrada, al menos 80 × 80 px.';
@@ -61,8 +62,9 @@
     chips: blk => [COL_FIELD, T('title', 'Título del bloque')].concat(
       blk.groups
         ? [{ k: 'groups', label: 'Grupos de banderas', kind: 'list', fields: GROUP, summary: g => es(g.label) }]
-        : [{ k: 'items', label: 'Banderas', kind: 'list', fields: CHIP, summary: i => i.code || '' }]),
-    note: () => [COL_FIELD, T('title', 'Título del bloque'), T('text', 'Texto', { long: true }), { k: 'codes', label: 'Países', kind: 'countries' }],
+        : [{ k: 'lines', label: 'Líneas de texto con cifra (opcional)', kind: 'list', fields: LINE, summary: l => es(l.label) },
+           { k: 'items', label: 'Banderas', kind: 'list', fields: CHIP, summary: i => i.code || '' }]),
+    note: () => [COL_FIELD, T('title', 'Título del bloque'), { k: 'image', label: 'Icono (imagen, opcional)', kind: 'image', hint: ICON_HINT }, T('text', 'Texto', { long: true }), { k: 'codes', label: 'Países', kind: 'countries' }],
     trend: () => [COL_FIELD, T('title', 'Título del bloque'), { k: 'labels', label: 'Etiquetas del eje (años)', kind: 'strs' },
             { k: 'values', label: 'Valores', kind: 'nums', hint: NUMS + ' Debe haber tantos valores como etiquetas.' }, S('badge', 'Etiqueta destacada (ej. -49%)')]
   };
@@ -558,9 +560,14 @@
     $('#e-dlg-ok').onclick = () => { dlg.close(); res(true); }; $('#e-dlg-cancel').onclick = () => { dlg.close(); res(false); };
     dlg.showModal();
   });
-  const usedImages = () => new Set([
-    ...data.boxes.filter(b => b.image).flatMap(b => typeof b.image === 'object' ? [b.image.es, b.image.en] : [b.image]),
-    ...((data.ui.logo && data.ui.logo.enabled && data.ui.logo.src) ? [data.ui.logo.src] : [])]);
+  /* todas las imágenes que usa el dashboard: cajas, iconos de datos, bloques, grupos de banderas y logo */
+  const usedImages = () => {
+    const one = v => (v && typeof v === 'object') ? [v.es, v.en] : [v], out = [];
+    const items = a => (a || []).forEach(i => out.push(...one(i.image)));
+    data.boxes.forEach(b => { out.push(...one(b.image)); items(b.items); (b.blocks || []).forEach(k => { out.push(...one(k.image)); items(k.items); (k.groups || []).forEach(g => items(g.items)); }); });
+    if (data.ui.logo && data.ui.logo.enabled) out.push(data.ui.logo.src);
+    return new Set(out.filter(Boolean));
+  };
 
   async function save() {
     if (window.showDirectoryPicker) {

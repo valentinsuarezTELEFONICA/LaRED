@@ -42,29 +42,30 @@
 
   /* línea/área con animación de trazo (tendencia de la col. de red y gráfico de área) */
   function lineArea(o) {
-    const W = o.W, H = o.H, L = 10, R = W - 10, T = 20, B = H - (o.xl ? 22 : 8);
+    const k = o.k || 1;                          // factor de escala para huecos pequeños (1 = tamaño normal)
+    const W = o.W, H = o.H, L = 10 * k, R = W - 10 * k, T = 20 * k, B = H - (o.xl ? 22 * k : 8 * k);
     const v = (o.values || []).map(num);
     if (v.length < 2 || B - T < 10 || R - L < 20) return '';
-    const max = Math.max(...v, 1) * 1.08, id = uid(), c = o.color || '#5bc5f2';
+    const max = Math.max(...v, 1) * 1.08, id = uid(), c = o.color || '#5bc5f2', so = o.solid ? [.95, .8] : [.6, .05];
     const p = pts(v, L, R, T, B, 0, max);
     let s = `<svg viewBox="0 0 ${W} ${H}" role="img"><defs>
-      <linearGradient id="g${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity=".6"/><stop offset="1" stop-color="${c}" stop-opacity=".05"/></linearGradient>
+      <linearGradient id="g${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${c}" stop-opacity="${so[0]}"/><stop offset="1" stop-color="${c}" stop-opacity="${so[1]}"/></linearGradient>
       ${clipDef('c' + id, W, H)}</defs>`;
-    if (o.grid) for (let k = 0; k <= 4; k++) { const y = T + (B - T) * k / 4; s += `<line x1="${L}" x2="${R}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,.13)"/>`; }
+    if (o.grid) for (let g = 0; g <= 4; g++) { const y = T + (B - T) * g / 4; s += `<line x1="${L}" x2="${R}" y1="${y}" y2="${y}" stroke="rgba(255,255,255,.13)"/>`; }
     s += `<g clip-path="url(#c${id})"><path d="${sp(p)} L${R} ${B} L${L} ${B}Z" fill="url(#g${id})"/></g>`;
-    s += `<path class="draw" pathLength="1" d="${sp(p)}" fill="none" stroke="${c}" stroke-width="2.2"/>`;
-    if (o.dots) s += p.map(q => `<circle class="fadein" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="3" fill="#fff"/>`).join('');
+    s += `<path class="draw" pathLength="1" d="${sp(p)}" fill="none" stroke="${c}" stroke-width="${(2.2 * k).toFixed(2)}"/>`;
+    if (o.dots) s += p.map(q => `<circle class="fadein" cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${(3 * k).toFixed(2)}" fill="#fff"/>`).join('');
     if (o.arrow) {
-      const y0 = p[0][1] - 14, y1 = p[p.length - 1][1] - 14, ang = Math.atan2(y1 - y0, R - L) * 180 / Math.PI;
-      s += `<path class="draw" pathLength="1" d="M${L} ${y0.toFixed(1)} L${R} ${y1.toFixed(1)}" stroke="#fff" stroke-width="2" fill="none" style="--d:.5s"/>
-            <g class="fadein" transform="translate(${R} ${y1.toFixed(1)}) rotate(${ang.toFixed(1)})"><path d="M2 0 L-10 -6 L-10 6Z" fill="#fff"/></g>`;
+      const y0 = p[0][1] - 14 * k, y1 = p[p.length - 1][1] - 14 * k, ang = Math.atan2(y1 - y0, R - L) * 180 / Math.PI;
+      s += `<path class="draw" pathLength="1" d="M${L} ${y0.toFixed(1)} L${R} ${y1.toFixed(1)}" stroke="#fff" stroke-width="${(2 * k).toFixed(2)}" fill="none" style="--d:.5s"/>
+            <g class="fadein" transform="translate(${R} ${y1.toFixed(1)}) rotate(${ang.toFixed(1)})"><path d="M${2 * k} 0 L${-10 * k} ${-6 * k} L${-10 * k} ${6 * k}Z" fill="#fff"/></g>`;
     }
     if (o.badge) {
-      const q = o.arrow ? [(L + R) / 2, (p[0][1] + p[p.length - 1][1]) / 2 - 14] : p[Math.round((p.length - 1) * .55)];
-      const by = o.arrow ? q[1] : q[1] - 20;
-      s += `<g class="fadein"><rect x="${(q[0] - 28).toFixed(1)}" y="${(by - 12).toFixed(1)}" width="56" height="24" rx="12" fill="#fff"/><text x="${q[0].toFixed(1)}" y="${(by + 4).toFixed(1)}" text-anchor="middle" style="fill:#1f2a44;font-size:12px;font-weight:700">${esc(o.badge)}</text></g>`;
+      const q = o.arrow ? [(L + R) / 2, (p[0][1] + p[p.length - 1][1]) / 2 - 14 * k] : p[Math.round((p.length - 1) * .55)];
+      const by = o.arrow ? q[1] : q[1] - 20 * k;
+      s += `<g class="fadein"><rect x="${(q[0] - 28 * k).toFixed(1)}" y="${(by - 12 * k).toFixed(1)}" width="${56 * k}" height="${24 * k}" rx="${12 * k}" fill="#fff"/><text x="${q[0].toFixed(1)}" y="${(by + 4 * k).toFixed(1)}" text-anchor="middle" style="fill:#1f2a44;font-size:${12 * k}px;font-weight:700">${esc(o.badge)}</text></g>`;
     }
-    (o.xl || []).forEach(l => { s += `<text x="${(L + (R - L) * l.f).toFixed(1)}" y="${H - 6}" text-anchor="middle">${esc(l.text)}</text>`; });
+    (o.xl || []).forEach(l => { s += `<text x="${(L + (R - L) * l.f).toFixed(1)}" y="${H - 6 * k}" text-anchor="middle"${k !== 1 ? ` style="font-size:${10 * k}px"` : ''}>${esc(l.text)}</text>`; });
     return s + '</svg>';
   }
 
@@ -117,10 +118,10 @@
   }
   function gauge(it) {
     const p = pct(it.value, it.max), d = 'M10 52 A40 40 0 0 1 90 52';
-    return `<div class="g"><svg viewBox="0 0 100 58"><path d="${d}" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="9" pathLength="100"/>
-      <path class="arc" d="${d}" fill="none" stroke="#5bc5f2" stroke-width="9" pathLength="100" style="--a:${p};--b:${100 - p}"/></svg>
-      <div class="gv">${countSpan(it.value, it.dec, t(it.prefix))}<small>${esc(t(it.unit))}</small></div>
-      <p>${esc(t(it.label))}</p></div>`;
+    return `<div class="g"><svg viewBox="0 0 100 58"><path d="${d}" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="9" pathLength="100"/>
+      <path class="arc" d="${d}" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="9" pathLength="100" style="--a:${p};--b:${100 - p}"/>
+      <polygon class="needle" points="17,52 50,48.5 50,55.5" fill="#fff" style="--r:${(p * 1.8).toFixed(1)}deg"/></svg>
+      <p>${esc(t(it.label))}</p><div class="gv">${countSpan(it.value, it.dec, t(it.prefix))}<small>${esc(t(it.unit))}</small></div></div>`;
   }
   /* chip compacto: bandera arriba, valor debajo (sin repetir la etiqueta en cada fila) */
   function chip(it) {
@@ -138,7 +139,7 @@
     return ICONS[it.icon] || '';
   }
   function iconStat(it) {
-    return `<div class="ic1">${iconOrImage(it)}<b>${countSpan(it.value, it.dec, t(it.prefix))}${esc(t(it.unit))}</b><span>${esc(t(it.label))}</span></div>`;
+    return `<div class="ic1">${iconOrImage(it)}<span>${esc(t(it.label))}</span><b>${countSpan(it.value, it.dec, t(it.prefix))}${esc(t(it.unit))}</b></div>`;
   }
   const ICONS = {
     fixed: '<svg viewBox="0 0 48 48"><rect x="5" y="29" width="38" height="11" rx="3"/><path d="M13 34.5h.01M19 34.5h.01M24 29V17M16 21a11 11 0 0 1 16 0M11 15.5a18 18 0 0 1 26 0"/></svg>',
@@ -146,21 +147,24 @@
     coverage: '<svg viewBox="0 0 48 48"><path d="M8 40h4v-8H8v8ZM16 40h4V22h-4v18ZM24 40h4V14h-4v26ZM32 40h4V6h-4v34Z"/></svg>',
     sites: '<svg viewBox="0 0 48 48"><path d="M24 4v10M14 14l4 4M34 14l-4 4M24 18l-10 22h20L24 18Z" fill="none" stroke-linejoin="round"/></svg>'
   };
-  const card = (b, body, cls) => `<section class="card"><h3>${esc(t(b.title))}</h3><div class="body ${cls || ''}">${body}</div></section>`;
+  const card = (b, body, cls, cardCls) => `<section class="card ${cardCls || ''}"><h3>${esc(t(b.title))}</h3><div class="body ${cls || ''}">${body}</div></section>`;
   const host = (b, kind, extra) => `<div class="host" data-kind="${kind}" data-box="${esc(b.id)}" ${extra || ''}></div>`;
 
+  /* Alto relativo de cada bloque dentro de su columna (proporciones de la maqueta 1000×568).
+     Se puede forzar con k.weight en los datos. */
+  const BLOCK_W = { gauges: 73, icons: 58, note: 36, trend: 80 };
   function blockHTML(b, k, bi) {
-    if (k.type === 'trend') return `<div class="blk grow"><h4>${esc(t(k.title))}</h4>${host(b, 'trend', `data-bi="${bi}"`)}</div>`;
-    let h = `<div class="blk"><h4>${esc(t(k.title))}</h4>`;
+    const w = num(k.weight) || (k.type === 'chips' ? (k.groups ? 49 : (k.lines ? 64 : 46)) : BLOCK_W[k.type]) || 50, st = `style="flex:${w} 1 0"`;
+    if (k.type === 'trend') return `<div class="blk trendb" ${st}><h4>${esc(t(k.title))}</h4>${host(b, 'trend', `data-bi="${bi}"`)}</div>`;
+    let h = `<fieldset class="blk" ${st}><legend>${esc(t(k.title))}</legend><div class="bin">`;
     if (k.type === 'gauges') h += `<div class="gauges">${(k.items || []).map(gauge).join('')}</div>`;
     else if (k.type === 'icons') h += `<div class="icons">${(k.items || []).map(iconStat).join('')}</div>`;
     else if (k.type === 'chips') {
-      h += (k.groups && k.groups.length)
-        ? k.groups.map(g => `<div style="margin-bottom:5px"><h4 style="margin:0 0 3px">${esc(t(g.label))}</h4>${chipsRow(g.items)}</div>`).join('')
-        : chipsRow(k.items);
+      if (k.groups && k.groups.length) h += `<div class="grps">${k.groups.map(g => `<div class="grp"><p class="lb">${esc(t(g.label))}</p>${chipsRow(g.items)}</div>`).join('')}</div>`;
+      else h += (k.lines || []).map(l => `<p class="fl">${esc(t(l.label))}: <b>${countSpan(l.value, l.dec, t(l.prefix))}${esc(t(l.unit))}</b></p>`).join('') + chipsRow(k.items);
     }
-    else if (k.type === 'note') h += `<div class="note"><span>${esc(t(k.text))}</span><span class="codes">${(k.codes || []).map(flagChip).join('')}</span></div>`;
-    return h + '</div>';
+    else if (k.type === 'note') h += `<div class="note">${iconOrImage({ image: k.image, icon: k.icon })}<span class="nt">${esc(t(k.text))}</span><span class="codes">${(k.codes || []).map(flagChip).join('')}</span></div>`;
+    return h + '</div></fieldset>';
   }
   const RENDER = {
     image(b) {
@@ -173,7 +177,7 @@
     network(b) {
       const blocks = b.blocks || [];
       const col = n => blocks.map((k, bi) => (num(k.col) || 1) === n ? blockHTML(b, k, bi) : '').join('');
-      return card(b, `<div class="blocks2"><div class="bcol">${col(1)}</div><div class="bcol">${col(2)}</div></div>`);
+      return card(b, `<div class="blocks2"><div class="bcol">${col(1)}</div><div class="bcol">${col(2)}</div></div>`, '', 'net');
     },
     area(b) { return card(b, host(b, 'area')); },
     stat(b) {
@@ -206,7 +210,7 @@
   };
 
   const DRAW = {
-    trend: (b, W, H, blk) => lineArea({ W, H, values: blk.values, dots: true, badge: blk.badge, color: '#e8edf8',
+    trend: (b, W, H, blk) => lineArea({ W, H, k: .68, values: blk.values, dots: true, arrow: true, solid: true, badge: blk.badge, color: '#f4f6fb',
       xl: (blk.labels || []).map((x, i, a) => ({ f: i / Math.max(1, a.length - 1), text: x })) }),
     area: (b, W, H) => lineArea({ W, H, values: b.values, grid: true, arrow: true, badge: b.badge, color: '#8a9bc4',
       xl: (b.xLabels || []).map((x, i, a) => ({ f: (i + .5) / a.length, text: x })) }),

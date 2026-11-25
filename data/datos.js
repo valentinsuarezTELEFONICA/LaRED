@@ -137,7 +137,7 @@ window.DASHBOARD_DATA = {
                 "es": "Hogares pasados con banda ultra ancha (red propia)",
                 "en": "UBB premises passed (own network)"
               },
-              "value": 184,
+              "value": 86,
               "max": 220,
               "prefix": "+",
               "unit": "M"
@@ -154,6 +154,7 @@ window.DASHBOARD_DATA = {
           "items": [
             {
               "icon": "coverage",
+              "image": "img/iconos/cobertura-4g.png",
               "value": 95,
               "max": 100,
               "unit": "%",
@@ -165,6 +166,7 @@ window.DASHBOARD_DATA = {
             },
             {
               "icon": "sites",
+              "image": "img/iconos/sitios-moviles.png",
               "value": 120,
               "max": 200,
               "unit": "K",
@@ -176,6 +178,7 @@ window.DASHBOARD_DATA = {
             },
             {
               "icon": "coverage",
+              "image": "img/iconos/cobertura-latam.png",
               "value": 92,
               "max": 100,
               "unit": "%",
@@ -187,6 +190,7 @@ window.DASHBOARD_DATA = {
             },
             {
               "icon": "coverage",
+              "image": "img/iconos/cobertura-ue.png",
               "value": 100,
               "max": 100,
               "unit": "%",
@@ -230,7 +234,7 @@ window.DASHBOARD_DATA = {
               "items": [
                 {
                   "code": "ENG",
-                  "value": 67,
+                  "value": 87,
                   "max": 100,
                   "prefix": "",
                   "unit": "%",
@@ -260,9 +264,29 @@ window.DASHBOARD_DATA = {
           "col": 2,
           "type": "chips",
           "title": {
-            "es": "Red de fibra de Telefónica — hogares pasados con FTTH",
-            "en": "Telefonica's fibre network — FTTH premises passed"
+            "es": "Red de fibra de Telefónica",
+            "en": "Telefonica's fibre network"
           },
+          "lines": [
+            {
+              "label": {
+                "es": "Hogares pasados con FTTH",
+                "en": "FTTH premises passed"
+              },
+              "value": 74,
+              "prefix": "+",
+              "unit": "M"
+            },
+            {
+              "label": {
+                "es": "Hogares pasados con FTTH (red propia)",
+                "en": "FTTH premises passed (own network)"
+              },
+              "value": 72,
+              "prefix": "+",
+              "unit": "M"
+            }
+          ],
           "items": [
             {
               "code": "ESP",
@@ -297,9 +321,10 @@ window.DASHBOARD_DATA = {
             "es": "Consumo energético de la red de Telefónica",
             "en": "Telefonica's network energy consumption"
           },
+          "image": "img/iconos/fuentes-renovables.png",
           "text": {
-            "es": "100% de electricidad renovable",
-            "en": "100% renewable electricity"
+            "es": "100% de la electricidad de fuentes renovables",
+            "en": "100% of electricity from renewable sources"
           },
           "codes": [
             "ESP",

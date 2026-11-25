@@ -1,6 +1,6 @@
 # 03 · Pendientes y decisiones
 
-Última actualización: 2026-11-20
+Última actualización: 2026-11-25
 
 ## Pedidos por el usuario para la próxima sesión
 
@@ -24,7 +24,7 @@ Solución prevista: **auto-fit por caja** (medir `scrollHeight` frente al alto y
 | Caja | Estado |
 |---|---|
 | 8 · Tráfico por categoría | ✅ 24/11: área a la izquierda (≈40 %), leyenda en 2 columnas (nombre + %) y donut debajo, en la columna derecha (56 %). Letra de leyenda 8,5 (×2 en 4K). Sin recortes en ES ni EN. |
-| 5 · La red de Telefónica en cifras | ⏳ siguiente: pierde la parte inferior |
+| 5 · La red de Telefónica en cifras | ✅ 25/11: maquetada según `referencia/maqueta_red_en_cifras.png` (bloques enmarcados con título en el borde: velocímetros, iconos 4G/sitios/LATAM/UE con PNG propios, 5G, fibra con líneas +M, energía con icono y 4 banderas, tendencia con flecha y -49 %). Sin desbordes en ES ni EN. Datos tomados de la maqueta: +86M, UK 5G 87 %, fibra +74M/+72M (la 3.ª bandera sigue siendo Alemania; en la maqueta parece un logo azul). Editor: nuevos campos «Líneas de texto con cifra» e «Icono (imagen)». |
 | 6 · Tráfico total de Internet | ⏳ queda sin gráfico (110 de alto) |
 | 7 · Consumo medio por usuario | ⏳ se corta el segundo bloque |
 | 9 y 10 · Semanales | ⏳ cortan la leyenda |

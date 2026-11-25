@@ -18,13 +18,15 @@
 /* ---------- cabecera ---------- */
 .stage header{position:absolute;left:48px;right:48px;top:0;height:100px;display:flex;align-items:center;justify-content:flex-end}
 .stage h1.dash-title{position:absolute;margin:0;font-weight:700;letter-spacing:.01em;white-space:nowrap;left:48px;top:36px;font-size:34px}
-.ctl{display:flex;gap:4px;background:#fff;border-radius:6px;padding:6px;transition:opacity .5s}
-.ctl button{font:600 15px var(--font);border:0;background:transparent;color:#3a4566;padding:8px 14px;border-radius:4px;cursor:pointer}
+.ctl{display:flex;align-items:center;gap:4px;background:#fff;border-radius:12px;padding:5px 12px 5px 14px;transition:opacity .5s;box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 0 0 1px rgba(0,0,0,.06)}
+.ctl button{font:600 15px var(--font);border:0;background:transparent;color:#232d47;padding:8px 14px;border-radius:6px;cursor:pointer}
+.ctl button.ic{width:36px;height:36px;padding:0;display:flex;align-items:center;justify-content:center}
+.ctl button.ic svg{width:18px;height:18px;fill:none;stroke:#232d47;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .ctl button:hover{background:#eef1f8}
 .ctl button.on{background:#0a5cff;color:#fff}
-.hdr-logo{display:block;object-fit:contain;margin-right:24px;flex:none}
+.hdr-logo{display:block;object-fit:contain;margin-right:10px;flex:none}
 .hdr-logo.missing{display:none}
-.hdr-logo.ph{display:flex;align-items:center;justify-content:center;padding:0 14px;border:2px dashed rgba(255,255,255,.75);border-radius:8px;color:#fff;font:700 13px var(--font);letter-spacing:.08em}
+.hdr-logo.ph{display:flex;align-items:center;justify-content:center;padding:0 14px;border:2px dashed #232d47;border-radius:8px;color:#232d47;font:700 13px var(--font);letter-spacing:.08em}
 .ctl.ghost{pointer-events:none}
 .ctl button.lang{padding:4px 6px;display:flex;align-items:center;border-radius:50%}
 .ctl button.lang img{opacity:.7;transition:opacity .2s,box-shadow .2s}

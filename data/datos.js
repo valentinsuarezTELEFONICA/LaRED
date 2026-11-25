@@ -42,6 +42,11 @@ window.DASHBOARD_DATA = {
       "x": 48,
       "y": 36,
       "size": 34
+    },
+    "logo": {
+      "enabled": true,
+      "src": "img/logo-telefonica.png",
+      "height": 22
     }
   },
   "boxes": [

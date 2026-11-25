@@ -251,10 +251,16 @@
     /* Logo (data.ui.logo = {enabled, src, height}) a la izquierda del selector de idioma.
        En el editor (opts.editor) se pinta además un selector de muestra para ver su sitio real. */
     const lg = d.ui.logo || {}, lh = num(lg.height) || 40;
+    const logoHTML = () => lg.enabled && lg.src ? `<img class="hdr-logo" src="${esc(imageOverrides[lg.src] || lg.src)}" alt="Telefónica" style="height:${lh}px" onerror="this.classList.add('missing')">`
+      : (lg.enabled && opts.editor ? `<span class="hdr-logo ph" style="height:${lh}px;min-width:${lh}px">T</span>` : '');
+    const ICO = { rp: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20.5 3.5v5h-5"/></svg>', fs: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V5h4M20 9V5h-4M4 15v4h4M20 15v4h-4"/></svg>' };
+    window.__hdrCtl = (l2, rp, fs) => `<div class="ctl">${logoHTML()}
+          <button data-lang="es" class="lang ${l2 === 'es' ? 'on' : ''}" title="Español" aria-label="Español" aria-pressed="${l2 === 'es'}"><img src="img/flags/es.png" alt="ES"></button>
+          <button data-lang="en" class="lang ${l2 === 'en' ? 'on' : ''}" title="English" aria-label="English" aria-pressed="${l2 === 'en'}"><img src="img/flags/gb.png" alt="EN"></button>
+          <button data-act="rp" class="ic" title="${esc(rp)}" aria-label="${esc(rp)}">${ICO.rp}</button>
+          <button data-act="fs" class="ic" title="${esc(fs)}" aria-label="${esc(fs)}">${ICO.fs}</button></div>`;
     let hdr = '';
-    if (lg.enabled && lg.src) hdr += `<img class="hdr-logo" src="${esc(imageOverrides[lg.src] || lg.src)}" alt="Telefónica" style="height:${lh}px" onerror="this.classList.add('missing')">`;
-    else if (lg.enabled && opts.editor) hdr += `<span class="hdr-logo ph" style="height:${lh}px;min-width:${lh}px">LOGO</span>`;
-    if (opts.editor) hdr += `<div class="ctl ghost"><button class="lang ${lang === 'en' ? '' : 'on'}"><img src="img/flags/es.png" alt=""></button><button class="lang ${lang === 'en' ? 'on' : ''}"><img src="img/flags/gb.png" alt=""></button><button>&#8635;</button><button>&#9974;</button></div>`;
+    if (opts.editor) hdr = window.__hdrCtl(lang, '', '').replace('class="ctl"', 'class="ctl ghost"');
     stage.innerHTML = `<header>${hdr}</header><h1 class="dash-title" style="left:${tx}px;top:${ty}px;font-size:${ts}px">${esc(t(d.ui.title))}</h1>` + d.boxes.map(boxHTML).join('');
     const bg = (d.meta.bg && d.meta.bg.length >= 2) ? d.meta.bg : ['#67769b', '#7b88a8', '#56648b', '#2c3653', '#232c46'];
     const n = bg.length - 1;
@@ -312,11 +318,7 @@
         document.documentElement.lang = l;
         build(stage, d, l);
         const hdr = stage.querySelector('header');
-        hdr.insertAdjacentHTML('beforeend', `<div class="ctl">
-          <button data-lang="es" class="lang ${l === 'es' ? 'on' : ''}" title="Español" aria-label="Español" aria-pressed="${l === 'es'}"><img src="img/flags/es.png" alt="ES"></button>
-          <button data-lang="en" class="lang ${l === 'en' ? 'on' : ''}" title="English" aria-label="English" aria-pressed="${l === 'en'}"><img src="img/flags/gb.png" alt="EN"></button>
-          <button data-act="rp" title="${esc(t(d.ui.replay))}" aria-label="${esc(t(d.ui.replay))}">&#8635;</button>
-          <button data-act="fs" title="${esc(t(d.ui.full))}" aria-label="${esc(t(d.ui.full))}">&#9974;</button></div>`);
+        hdr.insertAdjacentHTML('beforeend', window.__hdrCtl(l, t(d.ui.replay), t(d.ui.full)));
         hdr.querySelectorAll('[data-lang]').forEach(b => b.onclick = () => { if (b.dataset.lang !== l) { l = b.dataset.lang; restart(); } });
         hdr.querySelector('[data-act=rp]').onclick = restart;
         hdr.querySelector('[data-act=fs]').onclick = toggleFull;
